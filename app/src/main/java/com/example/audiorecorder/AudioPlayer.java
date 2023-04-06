@@ -81,15 +81,23 @@ public class AudioPlayer {
         public void run() {
             audioTrack.play();
             running = true;
-
             while (running) {
                 genTone();
-
-                if (true) {
+                try {
+                    CommonVariables.acqPlay();
                     Log.i("fmcw_code", ""+audioTrack.write(generatedSound, 0, AudioPlayer.BUFFER_SIZE,AudioTrack.WRITE_BLOCKING));
-//                    lock.unlock();
-                } else {
-                    break;
+                } catch (InterruptedException e) {
+                    Log.i("sync","get record mutex failed");
+                    throw new RuntimeException(e);
+                }
+//                if (lock.tryLock()) {
+//                    Log.i("fmcw_code", ""+audioTrack.write(generatedSound, 0, AudioPlayer.BUFFER_SIZE,AudioTrack.WRITE_BLOCKING));
+////                    lock.unlock();
+//                } else {
+//                    break;
+//                }
+                finally {
+                    CommonVariables.relRecord();
                 }
             }
         }

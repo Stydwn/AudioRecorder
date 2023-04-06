@@ -83,9 +83,8 @@ public class AudioRecorder {
             audioRecord.startRecording();
             running = true;
             while (running) {
-                if (true) {
-                    // float[] audioData, int offsetInFloats, int sizeInFloats,int readMode
-                    // With READ_BLOCKING, the read will block until all the requested data is read.
+                try {
+                    CommonVariables.acqRecord();
                     audioRecord.read(buffer, 0, AudioRecorder.BUFFER_SIZE, AudioRecord.READ_BLOCKING);
                     Log.i("receive buffer",buffer[0]+" "+buffer[1]+" "+buffer[2]);
                     FileUtil.streamWriteMusic(fileOutputStream, buffer);
@@ -98,10 +97,33 @@ public class AudioRecorder {
                         lastSaveTime = time;
                         fileOutputStream = FileUtil.saveInStage(fileOutputStream, timestamp+".pcm");
                     }
-//                    lock.unlock();
-                } else {
-                    break;
+                } catch (InterruptedException e) {
+                    Log.i("sync","get record mutex failed");
+                    throw new RuntimeException(e);
                 }
+                finally {
+                    CommonVariables.relPlay();
+                }
+
+//                if (lock.tryLock()) {
+//                    // float[] audioData, int offsetInFloats, int sizeInFloats,int readMode
+//                    // With READ_BLOCKING, the read will block until all the requested data is read.
+//                    audioRecord.read(buffer, 0, AudioRecorder.BUFFER_SIZE, AudioRecord.READ_BLOCKING);
+//                    Log.i("receive buffer",buffer[0]+" "+buffer[1]+" "+buffer[2]);
+//                    FileUtil.streamWriteMusic(fileOutputStream, buffer);
+//                    long time = System.currentTimeMillis();
+//                    if(time - timestamp > 1000*60*60) { // 1h
+//                        timestamp = time;
+//                        lastSaveTime = time;
+//                        fileOutputStream = FileUtil.saveInNewFile(fileOutputStream, timestamp+".pcm");
+//                    }else if(time - lastSaveTime > 1000*60*5){ // 5min
+//                        lastSaveTime = time;
+//                        fileOutputStream = FileUtil.saveInStage(fileOutputStream, timestamp+".pcm");
+//                    }
+////                    lock.unlock();
+//                } else {
+//                    break;
+//                }
             }
         }
 

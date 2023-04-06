@@ -22,7 +22,8 @@ public class FileUtil {
         }
 
         dirName = String.valueOf(System.currentTimeMillis());
-        File dirs = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), dirName);
+        File dirs = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), dirName); //for pixel3
+//        File dirs = new File(mainActivity.getExternalFilesDir(null), dirName);       // using abs path for pixelXL
         if(!dirs.exists()){
             Log.i("dirs path ",dirs.toString());
             dirs.mkdir();
@@ -32,6 +33,7 @@ public class FileUtil {
         }
 
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)+"/"+dirName, filePath);
+//        File file = new File(mainActivity.getExternalFilesDir(null)+"/"+dirName, filePath);
         Log.i("save path ",file.toString());
         try {
             return new FileOutputStream(file);
@@ -56,6 +58,7 @@ public class FileUtil {
         try {
             fileOutputStream.close();
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)+"/"+dirName, fileName);
+//            File file = new File(mainActivity.getExternalFilesDir(null)+"/"+dirName, fileName);
             return new FileOutputStream(file);
         } catch (IOException e) {
             Log.e("FileUtil", e.getMessage());
@@ -67,6 +70,7 @@ public class FileUtil {
         try {
             fileOutputStream.close();
             return new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) +"/"+dirName + "/" + fileName, true);
+//            return new FileOutputStream(mainActivity.getExternalFilesDir(null) +"/"+dirName + "/" + fileName, true);
         } catch (IOException e) {
             Log.e("FileUtil", e.getMessage());
             return null;
