@@ -83,10 +83,11 @@ public class AudioRecorder {
             audioRecord.startRecording();
             running = true;
             while (running) {
-                if (lock.tryLock()) {
+                if (true) {
                     // float[] audioData, int offsetInFloats, int sizeInFloats,int readMode
                     // With READ_BLOCKING, the read will block until all the requested data is read.
                     audioRecord.read(buffer, 0, AudioRecorder.BUFFER_SIZE, AudioRecord.READ_BLOCKING);
+                    Log.i("receive buffer",buffer[0]+" "+buffer[1]+" "+buffer[2]);
                     FileUtil.streamWriteMusic(fileOutputStream, buffer);
                     long time = System.currentTimeMillis();
                     if(time - timestamp > 1000*60*60) { // 1h
@@ -97,7 +98,7 @@ public class AudioRecorder {
                         lastSaveTime = time;
                         fileOutputStream = FileUtil.saveInStage(fileOutputStream, timestamp+".pcm");
                     }
-                    lock.unlock();
+//                    lock.unlock();
                 } else {
                     break;
                 }

@@ -85,9 +85,9 @@ public class AudioPlayer {
             while (running) {
                 genTone();
 
-                if (lock.tryLock()) {
+                if (true) {
                     Log.i("fmcw_code", ""+audioTrack.write(generatedSound, 0, AudioPlayer.BUFFER_SIZE,AudioTrack.WRITE_BLOCKING));
-                    lock.unlock();
+//                    lock.unlock();
                 } else {
                     break;
                 }
