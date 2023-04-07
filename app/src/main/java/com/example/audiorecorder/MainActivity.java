@@ -5,9 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static int N_ZC = signal_len * BW / FS - 1;
     public static int ZC_ROOT = (N_ZC - 1) / 2;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +53,14 @@ public class MainActivity extends AppCompatActivity {
         audioPlayer = new AudioPlayer();
         audioRecorder = new AudioRecorder();
         FileUtil.init(this);
+        AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
+        Log.i("support raw audio? ",audiomanage.getProperty(AudioManager.PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED));
+        Log.i("mic support ultrasound? ",audiomanage.getProperty(AudioManager.PROPERTY_SUPPORT_MIC_NEAR_ULTRASOUND));
+        Log.i("spk support ultrasound? ",audiomanage.getProperty(AudioManager.PROPERTY_SUPPORT_SPEAKER_NEAR_ULTRASOUND));
+        Log.i("output frames per buf?",audiomanage.getProperty(AudioManager. PROPERTY_OUTPUT_FRAMES_PER_BUFFER));
+        Log.i("output sample rate?",audiomanage.getProperty(AudioManager. PROPERTY_OUTPUT_SAMPLE_RATE));
+        // if false, use MediaRecorder.AudioSource.VOICE_RECOGNITION instead.
         final Button button = binding.button;
         button.setOnClickListener(new View.OnClickListener() {
             @Override

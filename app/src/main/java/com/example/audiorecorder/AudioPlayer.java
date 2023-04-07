@@ -1,5 +1,6 @@
 package com.example.audiorecorder;
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -58,6 +59,7 @@ public class AudioPlayer {
         // int audioFormat, 音频量化位数 8/16bit
         // int bufferSizeInBytes, 缓冲区大小，最小缓冲区的大小取决于采样率、声道数、采样深度
         // int mode，stream和static两种，后者一次性就把数据交付给接收方，对较大的数据量而言是无法胜任的
+
         protected final AudioTrack audioTrack = new AudioTrack(
                 AudioManager.STREAM_MUSIC,
                 AudioPlayer.SAMPLE_RATE,

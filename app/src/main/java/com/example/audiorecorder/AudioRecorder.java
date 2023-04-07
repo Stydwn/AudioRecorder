@@ -4,6 +4,7 @@ import com.example.audiorecorder.utils.FileUtil;
 
 import android.annotation.SuppressLint;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class AudioRecorder {
         /**
          * AudioRecord 五个参数
          * audioSource 表示数据来源 一般为麦克风 MediaRecorder.AudioSource.MIC
+         *
          * sampleRateInHz 表示采样率 一般设置为 44100
          * channelConfig 表示声道 一般设置为 AudioFormat.CHANNEL_IN_MONO
          * audioFormat 数据编码方式 这里使用 AudioFormat.ENCODING_PCM_16BIT
@@ -68,7 +70,7 @@ public class AudioRecorder {
          */
         @SuppressLint("MissingPermission")
         private final AudioRecord audioRecord = new AudioRecord(
-                MediaRecorder.AudioSource.UNPROCESSED,
+                MediaRecorder.AudioSource.MIC,   // Unprocessed for pixel3 XL, VOICE_RECOGNITION for pixel6
                 AudioRecorder.SAMPLE_RATE,
                 AudioRecorder.CHANNEL_TYPE,
                 AudioRecorder.ENCODING_TYPE,
